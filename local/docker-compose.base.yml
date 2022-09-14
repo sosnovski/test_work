@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: mascot
+      POSTGRES_PASSWORD: mascot
+      POSTGRES_DB: mascot
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U mascot -d mascot" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migration:
+    image: artsafin/goose-migrations
+    volumes:
+      - ../../migrations:/migrations
+    command: postgres "host=postgres user=mascot password=mascot dbname=mascot sslmode=disable" up
+    depends_on:
+      postgres:
+        condition: service_healthy
