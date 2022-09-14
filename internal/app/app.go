@@ -65,6 +65,11 @@ func (s *Service) Start(ctx context.Context, cfg config.Config) {
 
 	s.AddClose(httpServer.Shutdown)
 
+	s.AddClose(func(ctx context.Context) error {
+		conn.Close()
+		return nil
+	})
+
 	if err := httpServer.ListenAndServe(); err != nil {
 		if (s.shutdown.Load() && !errors.Is(err, http.ErrServerClosed)) || !s.shutdown.Load() {
 			s.logger.Fatal("listen and serve", zap.Error(err))
