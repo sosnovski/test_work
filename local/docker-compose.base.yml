@@ -16,7 +16,7 @@ services:
   migration:
     image: artsafin/goose-migrations
     volumes:
-      - ../../migrations:/migrations
+      - ../migrations:/migrations
     command: postgres "host=postgres user=mascot password=mascot dbname=mascot sslmode=disable" up
     depends_on:
       postgres:
