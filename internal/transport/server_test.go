@@ -6,6 +6,7 @@ import (
 )
 
 func TestServer_RegisterServices(t *testing.T) {
+	t.Parallel()
 	handleFunc := func(ctx context.Context) error { return nil }
 
 	type args struct {
@@ -55,6 +56,7 @@ func TestServer_RegisterServices(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			s := NewServer()
 			if err := s.RegisterServices(tt.args.namesAndFuncs...); (err != nil) != tt.wantErr {
 				t.Errorf("RegisterServices() error = %v, wantErr %v", err, tt.wantErr)
@@ -64,6 +66,7 @@ func TestServer_RegisterServices(t *testing.T) {
 }
 
 func Test_server_RegisterService(t *testing.T) {
+	t.Parallel()
 	type args struct {
 		name string
 		fun  interface{}
@@ -198,7 +201,9 @@ func Test_server_RegisterService(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := tt.server.RegisterService(tt.args.name, tt.args.fun); (err != nil) != tt.wantErr {
 				t.Errorf("RegisterService() error = %v, wantErr %v", err, tt.wantErr)
 			}
